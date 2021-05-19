@@ -7,6 +7,7 @@ You can use ```MenuManager``` to describe your menus. It can be used as is or yo
 ```js
 // src/_menu/VisualStudioMainMenu.js
 import { MenuManager, MenuItem } from 'react-fluentui-menu-manager';
+import { ContextualMenuItemType } from '@fluentui/react/lib/ContextualMenu';
 
 export const AppMenu = new MenuManager();
 // File Menu
@@ -42,7 +43,7 @@ viewMenu.addItem([
         }),
     ]),
     new MenuItem('mDivider', null, {
-        itemType: 1
+        itemType: ContextualMenuItemType.Divider
     }),
     new MenuItem('mAbout', 'About', {
         iconProps: { iconName: 'Info' }
@@ -57,7 +58,7 @@ export default AppMenu;
 // src/App.js
 import React from 'react';
 import { CommandBar } from '@fluentui/react/lib/CommandBar';
-import AppMenu from 'src/_menu/VisualStudioMainMenu.js';
+import AppMenu from './_menu/VisualStudioMainMenu.js';
 
 const MODE_NAMES = ['fullscreenMode', 'compactMode', 'zenMode'];
 
@@ -74,20 +75,22 @@ class App extends React.Component {
     }
 
     initMenu() {
-        const menu = this.menuManager = AppMenu.copy();
+        const menuManager = this.menuManager = AppMenu.copy();
         const AppearanceMenu = menuManager.findBy('mView.mAppearance');
         for (const modeName of MODE_NAMES) {
             AppearanceMenu
                 .findBy(modeName)
                 .set('onClick', () => {
+                  console.log('clicked', modeName);
                     this.handlSelectAppearanceMode(modeName);
                 });
         }
         // Persist changes:
-        menu.refresh()
+        menuManager.refresh()
         // Update State
+        console.log('initmenu', menuManager.toFluentMenu());
         this.setState({
-            menuItems: menu.toFluentMenu()
+            menuItems: menuManager.toFluentMenu()
         });
     }
 
@@ -96,10 +99,15 @@ class App extends React.Component {
         for (const modeName of MODE_NAMES) {
             AppearanceMenu
                 .findBy(modeName)
-                .set('disabled', (modeName !== selectedModeName ? true : false));
+                .set('iconProps', {
+                  iconName: (modeName === selectedModeName ? 'RadioBtnOn' : 'RadioBtnOff')
+                });
         }
+        console.log(selectedModeName);
         this.menuManager.refresh();
-        this.setState()
+        this.setState({
+          menuItems: this.menuManager.toFluentMenu()
+        })
     }
 
     render() {
@@ -112,3 +120,6 @@ class App extends React.Component {
 
 export default App;
 ```
+
+When you will click on one of the Appearance, it will change the icon in the menu:
+![alt text](https://raw.githubusercontent.com/queval-j/react-fluentui-menu-manager/main/doc/asset/menu_clicked.png)

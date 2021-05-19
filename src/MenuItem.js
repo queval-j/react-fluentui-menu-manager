@@ -23,7 +23,7 @@ export class MenuItem {
     initialize(id, label, opts) {
         const options = opts || {};
         this._data = {
-            options,
+            ...options,
             key: id,
             name: label,
             menuItems: []
@@ -58,16 +58,22 @@ export class MenuItem {
         let data = {...this._data};
         delete data.menuItems;
         data = deepDataCopy(data);
+        data.onClick = this._data.onClick;
+        for (const key in data) {
+            if (data[key] === undefined || data[key] === null) {
+                delete data[key];
+            }
+        }
         const menus = [];
         for (const m of menuItems) {
             menus.push(m.toFluentMenu());
         }
-        return {
-            ...data,
-            subMenuProps: {
+        if (menus.length) {
+            data.subMenuProps = {
                 items: menus
-            }
-        };
+            };
+        }
+        return data;
     }
 
     copy() {
