@@ -70,9 +70,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            menuItems: {}
-        });
+        this.initMenu();
     }
 
     initMenu() {
