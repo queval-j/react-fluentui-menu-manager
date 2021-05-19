@@ -1,0 +1,26 @@
+{
+  "name": "react-fluentui-menu-manager",
+  "version": "0.1.0",
+  "description": "Add a Menu Manager for Fluent UI's CommandBar",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "FluentUI",
+    "React",
+    "Menu",
+    "AppMenu",
+    "CommandBar"
+  ],
+  "author": "Jean-Christophe Queval-Bourgeois",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.14.0",
+    "@babel/preset-env": "^7.14.2",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3"
+  }
+}
